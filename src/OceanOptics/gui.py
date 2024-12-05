@@ -26,26 +26,24 @@ class UserInterface(QtWidgets.QMainWindow):
         hbox = QtWidgets.QHBoxLayout()
         vbox.addLayout(hbox)
 
-        # self.controller = OceanOpticsController()
-        # pixels = self.controller.data()
-
-        # plt.clf()
-        # plt.plot(pixels[20:])
-        # print(pixels)
-        # plt.show()
+        self.plot()
 
     def plot(self):
         """This method clears the plot widget and displays the experimental data."""
         self.plot_widget.clear()
 
         self.controller = OceanOpticsController()
-        pixels = self.controller.data()
+        values = self.controller.data()
 
-        self.plot_widget.plot(pixels[0], pixels[1], symbol="o", symbolSize=5, pen=None)
+        pixels = []
+        for i in range(len(values)):
+            pixels.append(i)
 
-        self.plot_widget.setLabel("left", "I [Ampere]")
-        self.plot_widget.setLabel("bottom", "U [Voltage]")
-        self.plot_widget.setTitle("U-I")
+        self.plot_widget.plot(pixels, values, symbol="o", symbolSize=5, pen=None)
+
+        self.plot_widget.setLabel("left", "??")
+        self.plot_widget.setLabel("bottom", "??")
+        self.plot_widget.setTitle("Spectrum")
 
     # @Slot()
     # def plot(self):

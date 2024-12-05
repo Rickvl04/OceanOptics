@@ -45,11 +45,11 @@ def main():
 
             pixels = array.array("H", b"".join(packets[:-1]))
 
-            # plt.clf()
-            # # plt.scatter(pixels[20:], marker='hd', color='black')
-            # plt.plot(pixels[20:])
-            # plt.show()
-            # print(f"Got {len(pixels)} pixels in {t1 - t0:.1f}s.")
+            plt.clf()
+            # plt.scatter(pixels[20:], marker='hd', color='black')
+            plt.plot(pixels[20:])
+            plt.show()
+            print(f"Got {len(pixels)} pixels in {t1 - t0:.1f}s.")
     except KeyboardInterrupt:
         pass
 
@@ -77,7 +77,6 @@ class OceanOpticsController:
         self.dev.write(0x01, b"\x02" + int(self.INT_TIME).to_bytes(4, "little"))
 
     def data(self):
-        t0 = time.monotonic()
         self.dev.write(0x01, b"\x09")
         # wait for measurement to complete
         time.sleep(self.INT_TIME / 1_000_000)
@@ -88,17 +87,10 @@ class OceanOpticsController:
             except usb.core.USBTimeoutError:
                 break
         assert packets[-1][-1] == 0x69
-        t1 = time.monotonic()
 
-        pixels = array.array("H", b"".join(packets[:-1]))
+        values = array.array("H", b"".join(packets[:-1]))
 
-        # plt.clf()
-        # # plt.scatter(pixels[20:], marker='hd', color='black')
-        # plt.plot(pixels[20:])
-        # plt.show()
-        # print(f"Got {len(pixels)} pixels in {t1 - t0:.1f}s.")
-
-        return pixels
+        return values
 
 
 if __name__ == "__main__":
