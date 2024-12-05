@@ -26,6 +26,8 @@ class UserInterface(QtWidgets.QMainWindow):
         hbox = QtWidgets.QHBoxLayout()
         vbox.addLayout(hbox)
 
+        # running = True
+        # while running:
         self.plot()
 
     def plot(self):
