@@ -9,8 +9,11 @@ readme = "README.md"
 python = "^3.13,<3.14"
 pyside6 = "^6.8.1"
 pyqtgraph = "^0.13.7"
-pyvisa-py = "^0.7.2"
-pyserial = "^3.5"
+plotext = "^5.3.2"
+pyusb = "^1.2.1"
+libusb = "^1.0.27.post3"
+matplotlib = "^3.9.3"
+pygments = "^2.18.0"
 
 
 [build-system]
