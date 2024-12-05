@@ -1,9 +1,23 @@
 import array
+import pathlib
+import platform
+import sys
 import time
 
-import plotext as plt
+import libusb
+import matplotlib.pyplot as plt
+import usb.backend.libusb1
 import usb.core
 import usb.util
+
+if usb.backend.libusb1.get_backend() is None:
+    if platform.system() == "Windows":
+        p_path = "x64" if sys.maxsize > 2**32 else "x86"
+        dll_path = (
+            pathlib.Path(libusb.__file__).parent
+            / rf"_platform\_windows\{p_path}\libusb-1.0.dll"
+        )
+        usb.backend.libusb1.get_backend(find_library=lambda x: dll_path)
 
 INT_TIME = 500_000
 
