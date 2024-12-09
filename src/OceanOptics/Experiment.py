@@ -108,6 +108,16 @@ class OceanOpticsController:
         # self._scan_thread.stop()
         self.running = False
 
+    def calibration(self):
+        self.dev.write(0x01, b"\x05\x01\x00")
+        print(self.dev.read(0x81, 512, 10).tobytes())
+        self.dev.write(0x01, b"\x05\x02\x00")
+        print(self.dev.read(0x81, 512, 10).tobytes())
+        self.dev.write(0x01, b"\x05\x03\x00")
+        print(self.dev.read(0x81, 512, 10).tobytes())
+        self.dev.write(0x01, b"\x05\x04\x00")
+        print(self.dev.read(0x81, 512, 10).tobytes())
+
 
 if __name__ == "__main__":
     main()

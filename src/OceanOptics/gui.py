@@ -60,8 +60,14 @@ class UserInterface(QtWidgets.QMainWindow):
         values = self.controller.data()
 
         pixels = []
+        a = 187.047120
+        b = 0.462711
+        c = -2.483961e-005
+        d = -3.224254e-010
+        pixels = []
         for i in range(len(values)):
-            pixels.append(i)
+            y = a + b * i + c * (i) ** 2 + d * (i) ** 3
+            pixels.append(y)
 
         self.plot_widget.plot(pixels, values, symbol="o", symbolSize=4, pen=None)
 
