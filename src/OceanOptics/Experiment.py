@@ -70,7 +70,7 @@ class OceanOpticsController:
                 )
                 usb.backend.libusb1.get_backend(find_library=lambda x: dll_path)
 
-        self.INT_TIME = 500_000
+        self.INT_TIME = 100_000
 
         self.dev = usb.core.find(idVendor=0x2457, idProduct=0x101E)
         self.dev.set_configuration()

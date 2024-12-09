@@ -34,11 +34,12 @@ class UserInterface(QtWidgets.QMainWindow):
 
         start_button = QtWidgets.QPushButton("Start measurement")
         hbox.addWidget(start_button)
-        start_button.clicked.connect(self.run)
 
-        # stop_button = QtWidgets.QPushButton("Stop measurement")
-        # hbox.addWidget(stop_button)
-        # start_button.clicked.connect(self.pause)
+        stop_button = QtWidgets.QPushButton("Stop measurement")
+        hbox.addWidget(stop_button)
+
+        start_button.clicked.connect(self.run)
+        stop_button.clicked.connect(self.pause)
 
         # self.controller.start_scan()
 
