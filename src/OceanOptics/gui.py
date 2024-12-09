@@ -5,7 +5,7 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 import pyqtgraph as pg
-from PySide6 import QtWidgets
+from PySide6 import QtCore, QtWidgets
 from PySide6.QtCore import Slot
 
 from OceanOptics.controller import OceanOpticsController
@@ -30,13 +30,21 @@ class UserInterface(QtWidgets.QMainWindow):
         hbox = QtWidgets.QHBoxLayout()
         vbox.addLayout(hbox)
 
-        self.start_scan()
+        self.controller.start_scan()
+
+        # Plot timer
+        self.plot_timer = QtCore.QTimer()
+        # Roep iedere 100 ms de plotfunctie aan
+        self.plot_timer.timeout.connect(self.plot)
+        self.plot_timer.start(1)
 
         self.show()
 
     def plot(self):
         """This method clears the plot widget and displays the experimental data."""
         self.plot_widget.clear()
+
+        self.controller._scan_thread.join()
 
         values = self.controller.data()
 
@@ -50,12 +58,7 @@ class UserInterface(QtWidgets.QMainWindow):
         self.plot_widget.setLabel("bottom", "??")
         self.plot_widget.setTitle("Spectrum")
 
-        time.sleep(1)
-
-    def start_scan(self):
-        """Start a new thread to execute a scan."""
-        self._scan_thread = threading.Thread(target=self.plot, args=())
-        self._scan_thread.start()
+        # time.sleep(1)
 
     # @Slot()
     # def plot(self):

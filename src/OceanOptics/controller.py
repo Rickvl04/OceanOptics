@@ -2,6 +2,7 @@ import array
 import pathlib
 import platform
 import sys
+import threading
 import time
 
 import libusb
@@ -90,12 +91,14 @@ class OceanOpticsController:
 
         values = array.array("H", b"".join(packets[:-1]))
 
-        # self.dev.write(0x01, b"\x04\x00\x00")
+        self.dev.write(0x01, b"\x04\x00\x00")
 
         return values
 
-    def shutdown(self):
-        self.dev.write(0x01, b"\x04\x00\x00")
+    def start_scan(self):
+        """Start a new thread to execute a scan."""
+        self._scan_thread = threading.Thread(target=self.data, args=())
+        self._scan_thread.start()
 
 
 if __name__ == "__main__":
