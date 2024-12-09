@@ -90,9 +90,12 @@ class OceanOpticsController:
 
         values = array.array("H", b"".join(packets[:-1]))
 
-        self.dev.write(0x01, b"\x04\x00\x00")
+        # self.dev.write(0x01, b"\x04\x00\x00")
 
         return values
+
+    def shutdown(self):
+        self.dev.write(0x01, b"\x04\x00\x00")
 
 
 if __name__ == "__main__":

@@ -1,4 +1,6 @@
 import sys
+import threading
+import time
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -20,21 +22,22 @@ class UserInterface(QtWidgets.QMainWindow):
         central_widget = QtWidgets.QWidget()
         self.setCentralWidget(central_widget)
 
+        self.controller = OceanOpticsController()
+
         vbox = QtWidgets.QVBoxLayout(central_widget)
         self.plot_widget = pg.PlotWidget()
         vbox.addWidget(self.plot_widget)
         hbox = QtWidgets.QHBoxLayout()
         vbox.addLayout(hbox)
 
-        # running = True
-        # while running:
-        self.plot()
+        self.start_scan()
+
+        self.show()
 
     def plot(self):
         """This method clears the plot widget and displays the experimental data."""
         self.plot_widget.clear()
 
-        self.controller = OceanOpticsController()
         values = self.controller.data()
 
         pixels = []
@@ -46,6 +49,13 @@ class UserInterface(QtWidgets.QMainWindow):
         self.plot_widget.setLabel("left", "??")
         self.plot_widget.setLabel("bottom", "??")
         self.plot_widget.setTitle("Spectrum")
+
+        time.sleep(1)
+
+    def start_scan(self):
+        """Start a new thread to execute a scan."""
+        self._scan_thread = threading.Thread(target=self.plot, args=())
+        self._scan_thread.start()
 
     # @Slot()
     # def plot(self):
