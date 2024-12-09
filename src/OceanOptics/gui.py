@@ -79,11 +79,17 @@ class UserInterface(QtWidgets.QMainWindow):
         for i in range(len(values)):
             y = a + b * i + c * (i) ** 2 + d * (i) ** 3
             pixels.append(y)
+        for i in range(32):
+            del pixels[0]
+            del values[0]
+        for i in range(6):
+            del pixels[-1]
+            del values[-1]
 
         self.plot_widget.plot(pixels, values, symbol="o", symbolSize=4, pen=None)
 
         self.plot_widget.setLabel("left", "Intensity")
-        self.plot_widget.setLabel("bottom", "pixels")
+        self.plot_widget.setLabel("bottom", "Wavelength (nm)")
         self.plot_widget.setTitle("Spectrum")
 
     def initial_plot(self):
