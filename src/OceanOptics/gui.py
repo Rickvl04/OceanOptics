@@ -8,7 +8,7 @@ import pyqtgraph as pg
 from PySide6 import QtCore, QtWidgets
 from PySide6.QtCore import Slot
 
-from OceanOptics.controller import OceanOpticsController
+from OceanOptics.Experiment import OceanOpticsController
 
 # PyQtGraph global options
 pg.setConfigOption("background", "w")
@@ -30,13 +30,23 @@ class UserInterface(QtWidgets.QMainWindow):
         hbox = QtWidgets.QHBoxLayout()
         vbox.addLayout(hbox)
 
-        self.controller.start_scan()
+        self.initial_plot()
 
-        # Plot timer
-        self.plot_timer = QtCore.QTimer()
-        # Roep iedere 100 ms de plotfunctie aan
-        self.plot_timer.timeout.connect(self.plot)
-        self.plot_timer.start(1)
+        start_button = QtWidgets.QPushButton("Start measurement")
+        hbox.addWidget(start_button)
+        start_button.clicked.connect(self.run)
+
+        # stop_button = QtWidgets.QPushButton("Stop measurement")
+        # hbox.addWidget(stop_button)
+        # start_button.clicked.connect(self.pause)
+
+        # self.controller.start_scan()
+
+        # # Plot timer
+        # self.plot_timer = QtCore.QTimer()
+        # # Roep iedere 1 ms de plotfunctie aan
+        # self.plot_timer.timeout.connect(self.plot)
+        # self.plot_timer.start(1)
 
         self.show()
 
@@ -52,13 +62,36 @@ class UserInterface(QtWidgets.QMainWindow):
         for i in range(len(values)):
             pixels.append(i)
 
-        self.plot_widget.plot(pixels, values, symbol="o", symbolSize=5, pen=None)
+        self.plot_widget.plot(pixels, values, symbol="o", symbolSize=4, pen=None)
 
-        self.plot_widget.setLabel("left", "??")
-        self.plot_widget.setLabel("bottom", "??")
+        self.plot_widget.setLabel("left", "Intensity")
+        self.plot_widget.setLabel("bottom", "pixels")
         self.plot_widget.setTitle("Spectrum")
 
-        # time.sleep(1)
+    def initial_plot(self):
+        """This method shows an initial empty plot window. An empty measurement is created as a default."""
+        pixels, values = [[], []]
+
+        self.plot_widget.plot(pixels, values, symbol="o", symbolSize=4, pen=None)
+
+        self.plot_widget.setLabel("left", "Intensity")
+        self.plot_widget.setLabel("bottom", "pixels")
+        self.plot_widget.setTitle("Spectrum")
+
+    def run(self):
+        self.controller.start_scan()
+
+        # Plot timer
+        self.plot_timer = QtCore.QTimer()
+        # Roep iedere 1 ms de plotfunctie aan
+        self.plot_timer.timeout.connect(self.plot)
+        self.plot_timer.start(1)
+
+    def pause(self):
+        if self.controller.running:
+            self.controller.stop_scan()
+
+            self.plot_timer.stop()
 
     # @Slot()
     # def plot(self):

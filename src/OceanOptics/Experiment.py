@@ -77,6 +77,8 @@ class OceanOpticsController:
         self.dev.write(0x01, b"\x01")
         self.dev.write(0x01, b"\x02" + int(self.INT_TIME).to_bytes(4, "little"))
 
+        self.running = False
+
     def data(self):
         self.dev.write(0x01, b"\x09")
         # wait for measurement to complete
@@ -99,6 +101,12 @@ class OceanOpticsController:
         """Start a new thread to execute a scan."""
         self._scan_thread = threading.Thread(target=self.data, args=())
         self._scan_thread.start()
+
+        self.running = True
+
+    def stop_scan(self):
+        # self._scan_thread.stop()
+        self.running = False
 
 
 if __name__ == "__main__":
