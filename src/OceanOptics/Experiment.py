@@ -47,7 +47,6 @@ def main():
             pixels = array.array("H", b"".join(packets[:-1]))
 
             plt.clf()
-            # plt.scatter(pixels[20:], marker='hd', color='black')
             plt.plot(pixels[20:])
             plt.show()
             print(f"Got {len(pixels)} pixels in {t1 - t0:.1f}s.")
@@ -70,12 +69,9 @@ class OceanOpticsController:
                 )
                 usb.backend.libusb1.get_backend(find_library=lambda x: dll_path)
 
-        # self.INT_TIME = 100_000
-
         self.dev = usb.core.find(idVendor=0x2457, idProduct=0x101E)
         self.dev.set_configuration()
         self.dev.write(0x01, b"\x01")
-        # self.dev.write(0x01, b"\x02" + int(self.INT_TIME).to_bytes(4, "little"))
 
         self.running = False
 
@@ -107,7 +103,6 @@ class OceanOpticsController:
         self.running = True
 
     def stop_scan(self):
-        # self._scan_thread.stop()
         self.running = False
 
     def calibration(self):

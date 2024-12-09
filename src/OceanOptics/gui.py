@@ -52,14 +52,6 @@ class UserInterface(QtWidgets.QMainWindow):
         start_button.clicked.connect(self.run)
         stop_button.clicked.connect(self.pause)
 
-        # self.controller.start_scan()
-
-        # # Plot timer
-        # self.plot_timer = QtCore.QTimer()
-        # # Roep iedere 1 ms de plotfunctie aan
-        # self.plot_timer.timeout.connect(self.plot)
-        # self.plot_timer.start(1)
-
         self.show()
 
     def plot(self):
@@ -70,7 +62,6 @@ class UserInterface(QtWidgets.QMainWindow):
 
         values = self.controller.data(self.int_time_spinbox.value() * 1000000)
 
-        pixels = []
         a = 187.047120
         b = 0.462711
         c = -2.483961e-005
@@ -116,10 +107,6 @@ class UserInterface(QtWidgets.QMainWindow):
             self.controller.stop_scan()
 
             self.plot_timer.stop()
-
-    # @Slot()
-    # def plot(self):
-    #    ...
 
 
 def main():
