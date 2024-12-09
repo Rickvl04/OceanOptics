@@ -70,19 +70,21 @@ class OceanOpticsController:
                 )
                 usb.backend.libusb1.get_backend(find_library=lambda x: dll_path)
 
-        self.INT_TIME = 100_000
+        # self.INT_TIME = 100_000
 
         self.dev = usb.core.find(idVendor=0x2457, idProduct=0x101E)
         self.dev.set_configuration()
         self.dev.write(0x01, b"\x01")
-        self.dev.write(0x01, b"\x02" + int(self.INT_TIME).to_bytes(4, "little"))
+        # self.dev.write(0x01, b"\x02" + int(self.INT_TIME).to_bytes(4, "little"))
 
         self.running = False
 
-    def data(self):
+    def data(self, INT_TIME):
+        self.dev.write(0x01, b"\x02" + int(INT_TIME).to_bytes(4, "little"))
+
         self.dev.write(0x01, b"\x09")
         # wait for measurement to complete
-        time.sleep(self.INT_TIME / 1_000_000)
+        time.sleep(INT_TIME / 1_000_000)
         packets = []
         while True:
             try:
