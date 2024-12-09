@@ -41,12 +41,12 @@ class UserInterface(QtWidgets.QMainWindow):
         start_button.clicked.connect(self.run)
         stop_button.clicked.connect(self.pause)
 
-        self.int_time_spinbox = QtWidgets.QSpinBox()
-        self.int_time_spinbox.setPrefix("Integration time: ")
-        self.int_time_spinbox.setMaximum(100000000)
-        self.int_time_spinbox.setMinimum(1)
-        self.int_time_spinbox.setSingleStep(1000)
-        self.int_time_spinbox.setValue(100000)
+        self.int_time_spinbox = QtWidgets.QDoubleSpinBox()
+        self.int_time_spinbox.setPrefix("Integration time (s): ")
+        self.int_time_spinbox.setMaximum(10)
+        self.int_time_spinbox.setMinimum(0.01)
+        self.int_time_spinbox.setSingleStep(0.01)
+        self.int_time_spinbox.setValue(0.1)
         hbox.addWidget(self.int_time_spinbox)
 
         start_button.clicked.connect(self.run)
@@ -68,7 +68,7 @@ class UserInterface(QtWidgets.QMainWindow):
 
         self.controller._scan_thread.join()
 
-        values = self.controller.data(self.int_time_spinbox.value())
+        values = self.controller.data(self.int_time_spinbox.value() * 1000000)
 
         pixels = []
         a = 187.047120
