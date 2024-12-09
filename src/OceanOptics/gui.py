@@ -38,9 +38,6 @@ class UserInterface(QtWidgets.QMainWindow):
         stop_button = QtWidgets.QPushButton("Stop measurement")
         hbox.addWidget(stop_button)
 
-        start_button.clicked.connect(self.run)
-        stop_button.clicked.connect(self.pause)
-
         self.int_time_spinbox = QtWidgets.QDoubleSpinBox()
         self.int_time_spinbox.setPrefix("Integration time (s): ")
         self.int_time_spinbox.setMaximum(10)
